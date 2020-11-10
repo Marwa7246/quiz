@@ -1,6 +1,10 @@
+import React, {useState} from 'react'
 import './App.css';
 
 function App() {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showScore, setShowScore] = useState(false);
+  const [score, setScore] = useState(0)
 
   const questions = [
 		{
@@ -39,23 +43,37 @@ function App() {
 				{ answerText: '7', isCorrect: true },
 			],
 		},
-	];
+  ];
+  
+  const handleOnClick = (isCorrect) => {      
+    const nextQuestion = currentQuestion + 1;
+    console.log(isCorrect);
+    if(isCorrect) {
+      setScore(score+1)
+
+    }
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion)
+    } else {        
+      setShowScore(true)
+    }
+
+  }
 
   return (
 		<div className='app'>
-			{/* HINT: replace "false" with logic to display the 
-      score when the user has answered all the questions */}
-			{false ? (
-				<div className='score-section'>You scored 1 out of {questions.length}</div>
+
+			{showScore ? (
+				<div className='score-section'>You scored {score} out of {questions.length}</div>
 			) : (
 				<>
 					<div className='question-section'>
 						<div className='question-count'>
-							<span>Question 1</span>/{questions.length}
+							<span>Question {currentQuestion+1}</span>/{questions.length}
 						</div>
-            <div className='question-text'>{questions[0].questionText}</div>
-            <div className='answer-options'>{questions[0].answerOptions.map(option=> {
-              return <button>{option.answerText}</button>})}
+            <div className='question-text'>{questions[currentQuestion].questionText}</div>
+            <div className='answer-options'>{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
+              return <button onClick={()=>handleOnClick(answerOption.isCorrect)}>{answerOption.answerText}</button>})}
 
             </div>
 					</div>
