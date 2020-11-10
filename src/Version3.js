@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import classnames from "classnames";
 
 import './App.css';
@@ -15,11 +15,46 @@ function Version3() {
 		classSubmit: 'hide',
 		classReveal: '',
 		classNext: true,
-		classFace: ''
+		classFace: '',
+		randomArray: [],
 		}
 
-  const [state, setState] = useState(initialState);
-	console.log(state);		
+
+
+	const [state, setState] = useState(initialState);
+	const [reset, setReset] = useState(0)
+	console.log(state);	
+	// const randomArrayNumbers =() =>{
+	// 	const arr =[];
+	// 	while (arr.length < 10) {
+	// 		const num = Math.floor(Math.random() * 10);
+	// 		if (arr.indexOf(num) === -1) {
+	// 			arr.push(num);
+	// 		}
+	// 	}
+	// 	return arr;
+	// }
+	// const arr = randomArrayNumbers()
+	// console.log(randomArrayNumbers())
+
+	useEffect ( () => {
+		function randomArrayNumbers() {
+			const arr =[];
+			while (arr.length < 10) {
+				const num = Math.floor(Math.random() * 10);
+				if (arr.indexOf(num) === -1) {
+					arr.push(num);
+				}
+			}
+			return arr;
+		}
+		const arr = randomArrayNumbers();
+
+			setState({...state, randomArray: arr});
+  }, [reset]);
+
+
+
 
 
   const questions = [
@@ -62,10 +97,10 @@ function Version3() {
   ];
   
   const handleOnClick = (answerOption, index) => {      
-    console.log(index, answerOption.isCorrect);
+    // console.log(index, answerOption.isCorrect);
 		const newScore = state.score + 1;
 		
-   	if (answerOption.isCorrect) {
+   	if (answerOption) {
       setState({...state,  score: newScore, classSubmit: "correct", classFace: "fas fa-smile", classNext: false, classReveal: 'show-answer'});                 
     } else {
       setState({...state, classSubmit: "incorrect", classFace: "fas fa-frown", classNext: false, classReveal: 'show-answer'});           
@@ -73,7 +108,9 @@ function Version3() {
   }
 
   const handleReset = ()=> {
-    setState(initialState)
+		const newReset = reset+1;
+		setReset(newReset);
+    setState(initialState);
 	}
 	const handleNext = () => {
 		const nextQuestion = state.currentQuestion + 1;
@@ -96,25 +133,25 @@ function Version3() {
 		<div className='app'>
 
 			{state.showScore ? (
-				<div className='score-section'>You scored {state.score} out of {questions.length}</div>
+				<div className='score-section'>You scored {state.score} out of {data.length}</div>
 			) : (
 				<>
 					<div className='question-section'>
 						<div className='question-count'>
-							<span>Question {state.currentQuestion+1}</span>/{questions.length}
+							<span>Question {state.currentQuestion+1}</span>/{data.length}
 						</div>
-            <div className='question-text'>{questions[state.currentQuestion].questionText}
+            <div className='question-text'>{data[state.currentQuestion].question}
 						<button className={state.classSubmit} disabled>{state.classSubmit}! <i class={state.classFace}></i></button>
 
 						</div>
 
-            <div className="answer-section">{questions[state.currentQuestion].answerOptions.map((answerOption, index)=> {
-              return <button className={answerOption.isCorrect  && state.classReveal}
+            <div className="answer-section">{data[state.currentQuestion].incorrect.map((answerOption, index)=> {
+              return <button 
                   key={index} 
 									onClick={()=>handleOnClick(answerOption, index)} 
 									disabled={!state.classNext}   
                   >
-                    {answerOption.answerText}
+                    {answerOption}
                     </button>})}
 
             </div>
