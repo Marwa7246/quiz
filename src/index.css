@@ -84,19 +84,23 @@ button {
   background-color: #70768a;
 }
 
-button:focus {
+button:focus, .answer-section:focus {
   outline: none;
 }
 .correct {
   display: block;
   text-transform: uppercase;
   background-color: #2f922f;
+  cursor: none;
+
 }
 
 .incorrect {
   text-transform: uppercase;
   display: block;
   background-color: #ff3333;
+  cursor: none;
+
 }
 
 .hide {
@@ -107,6 +111,15 @@ button:focus {
   cursor: pointer;
   background-color: #457cc4;
   text-align:center; 
+
+}
+
+.reset:disabled {
+  display: block;
+  background-color: grey;
+  color: #b9c0d4;
+  cursor: not-allowed;
+ 
 
 }
 
@@ -124,6 +137,9 @@ button:focus {
 }
 .next:disabled {
   background-color:grey;
+  color: #b9c0d4;
+  cursor: not-allowed;
+
 
 }
 
