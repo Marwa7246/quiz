@@ -9,7 +9,9 @@ function Version2() {
     score: 0,
     currentQuestion: 0,
     showScore: false,
-    classSubmit: 'hide',
+		classSubmit: 'hide',
+		classReveal: '',
+		classNext: 'next:disabled',
     }
 
   const [state, setState] = useState(initialState);
@@ -56,23 +58,26 @@ function Version2() {
   
   const handleOnClick = (answerOption, index) => {      
     console.log(index, answerOption.isCorrect);
-    const newScore = state.score + 1;
-		const nextQuestion = state.currentQuestion + 1;
+		const newScore = state.score + 1;
 		
-   	if (nextQuestion < questions.length && answerOption.isCorrect) {
-      setState({...state,  currentQuestion: nextQuestion, score: newScore, classSubmit: "correct"});          
-    } else if (nextQuestion < questions.length && !answerOption.isCorrect) { 
-      setState({...state,  currentQuestion: nextQuestion, classSubmit: "incorrect"}); 
-    } else if (nextQuestion >= questions.length && answerOption.isCorrect) {
-      setState({...state, score: newScore, classSubmit: "correct", showScore: true});           
+   	if (answerOption.isCorrect) {
+      setState({...state,  score: newScore, classSubmit: "correct", classNext: 'next', classReveal: 'correct'});                 
     } else {
-      setState({...state, classSubmit: "incorrect", showScore: true});           
+      setState({...state, classSubmit: "incorrect", classReveal: 'correct'});           
     }  
   }
 
   const handleReset = ()=> {
     setState(initialState)
-  }
+	}
+	const handleNext = () => {
+		const nextQuestion = state.currentQuestion + 1;
+		if (nextQuestion < questions.length) {
+      setState({...state,  currentQuestion: nextQuestion, classSubmit: "hide", classReveal: ''});          
+    } else {
+      setState({...state, showScore: true});           
+    }  
+	}
 
   const resetClass = state.currentQuestion ? "reset" : "hide";
   
@@ -96,7 +101,7 @@ function Version2() {
             <div className='question-text'>{questions[state.currentQuestion].questionText}</div>
 
             <div className="answer-section">{questions[state.currentQuestion].answerOptions.map((answerOption, index)=> {
-              return <button className="answer-option"
+              return <button className={answerOption.isCorrect  && state.classReveal}
                   key={index} 
                   onClick={()=>handleOnClick(answerOption, index)}    
                   >
@@ -111,6 +116,8 @@ function Version2() {
 		</div>
       <button className={state.classSubmit} >{state.classSubmit}</button>
       <button className={resetClass} onClick={handleReset} >RESET</button>
+			<button className={state.classNext} onClick={handleNext} >NEXT</button>
+
 
     </div>
     
