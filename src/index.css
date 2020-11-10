@@ -25,7 +25,7 @@ body {
 .app {
   background-color: #252d4a;
   width: 450px;
-  min-height: 200px;
+  min-height: 100px;
   height: min-content;
   border-radius: 15px;
   padding: 20px;
@@ -77,7 +77,7 @@ button {
   justify-content: space-between;
 }
 
-.answer-option:hover, .reset:hover {
+.answer-option:hover, .reset:hover, .version-selection:hover{
   background-color: #70768a;
 }
 
@@ -107,6 +107,11 @@ button:focus {
 
 }
 
-
+.version-selection {
+  display: block;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-color: #457cc4;
+}
 
 
