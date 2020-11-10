@@ -82,10 +82,9 @@ function Version2() {
 	}
 
   const resetClass = state.currentQuestion || !state.classNext? false : true;
-  
-  
 
-  return (
+
+	return (
   <div>
 
     <h1>Version 2</h1>

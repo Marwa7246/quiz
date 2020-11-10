@@ -24,7 +24,7 @@ function Version3() {
 	const [state, setState] = useState(initialState);
 	const [reset, setReset] = useState(0)
 	console.log(state);	
- 
+ let shuffledData = [];
 
 	useEffect ( () => {
 		function randomArrayNumbers() {
@@ -38,9 +38,18 @@ function Version3() {
 			return arr;
 		}
 		const arr = randomArrayNumbers();
+		function shuffle(array) {
+			return array.sort(() => Math.random() - 0.5);
+		}  
+		shuffledData = data.map((ele)=>{
+			return ({...ele, incorrect: shuffle(ele.incorrect)})
+		});
+		
 
 			setState({...state, randomArray: arr});
-  }, [reset]);
+	}, [reset]);
+	
+	console.log(data[0])
 
 
 
@@ -129,12 +138,12 @@ function Version3() {
 						<div className='question-count'>
 							<span>Question {state.currentQuestion+1}</span>/{state.randomArray.length}
 						</div>
-            <div className='question-text'>{state.randomArray.length && data[state.randomArray[state.currentQuestion]].question}
+            <div className='question-text'>{state.randomArray.length && data[0].question}
 						<button className={state.classSubmit} disabled>{state.classSubmit}! <i class={state.classFace}></i></button>
 
 						</div>
 
-            <div className="answer-section">{state.randomArray.length && data[state.randomArray[state.currentQuestion]].incorrect.map((answerOption, index)=> {
+            <div className="answer-section">{state.randomArray.length && data[0].incorrect.map((answerOption, index)=> {
               return <button 
                   key={index} 
 									onClick={()=>handleOnClick(answerOption, index)} 
@@ -151,7 +160,7 @@ function Version3() {
 		</div>
 		<div className='app'>
 
-      <button className='reset' onClick={handleReset} disabled={resetClass}>RESET</button>
+      <button className='reset' onClick={handleReset} disabled={false}>RESET</button>
 			<button className='next' onClick={handleNext} disabled={state.classNext}>NEXT</button>
 		</div>
 
