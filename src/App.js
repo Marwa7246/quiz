@@ -1,13 +1,19 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import classnames from "classnames";
 import './App.css';
 
 function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
-  const [score, setScore] = useState(0)
-  const [classSubmit, setClassSubmit] = useState('next')
-  const [classOption, setClassOption] = useState('')
-  const [selectedItem, setSelectedItem] = useState()
+  const [score, setScore] = useState(0);
+  const [classSubmit, setClassSubmit] = useState('hide');
+  const [validate, setValidate] = useState('');
+  const [selectedItem, setSelectedItem] = useState();
+
+  // const classOption = classnames("option", {
+  //   "correct": selected,
+  // });
+
 
   const questions = [
 		{
@@ -53,25 +59,31 @@ function App() {
     setSelectedItem(index);
     if(answerOption.isCorrect) {
       setScore(score+1);
+      setValidate('Correct')
+      setClassSubmit('correct')      
+
+    } else {
+      setValidate('Incorrect!')
+      setClassSubmit('incorrect')      
+
+
     }
-  }
-  const determineItemStyle = (index) => {
-    const isItemSelected = selectedItem === index;
-    console.log(isItemSelected, selectedItem, index);
-    return isItemSelected ?  "bg-light-gray" : "";
-
-  }
-
-  const handleSubmit=(e)=>{
     const nextQuestion = currentQuestion + 1;
-    console.log(e.target.className)
     if (nextQuestion < questions.length) {
           setCurrentQuestion(nextQuestion)
         } else {  
-          setClassSubmit('next-end')      
           setShowScore(true)
         }
   }
+  // const determineItemStyle = (index) => {
+  //   const isItemSelected = selectedItem === index;
+  //   console.log(isItemSelected, selectedItem, index);
+  //   return isItemSelected ?  "bg-light-gray" : "bg-black";
+
+  // }
+
+
+  
 
   return (
     <div>
@@ -90,16 +102,16 @@ function App() {
 						</div>
             <div className='question-text'>{questions[currentQuestion].questionText}</div>
 
-            <div className={classOption}>{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
-              return <button 
+            <div className="answer-section">{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
+              return <button
               // className={determineItemStyle} 
-              key={index} 
-              onClick={()=>handleOnClick(answerOption, index)}
-              selected={determineItemStyle(index)}
-              
-              >
-                {answerOption.answerText}
-                </button>})}
+                  key={index} 
+                  onClick={()=>handleOnClick(answerOption, index)}
+                  // selected={determineItemStyle(index)}
+                  
+                  >
+                    {answerOption.answerText}
+                    </button>})}
 
             </div>
 					</div>
@@ -107,7 +119,7 @@ function App() {
 				</>
 			)}
 		</div>
-      <button className={classSubmit} onClick={handleSubmit}>Next Question</button>
+      <button className={classSubmit} >{validate}</button>
     </div>
 
 	);
