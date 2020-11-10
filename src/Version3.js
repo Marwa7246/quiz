@@ -24,24 +24,13 @@ function Version3() {
 	const [state, setState] = useState(initialState);
 	const [reset, setReset] = useState(0)
 	console.log(state);	
-	// const randomArrayNumbers =() =>{
-	// 	const arr =[];
-	// 	while (arr.length < 10) {
-	// 		const num = Math.floor(Math.random() * 10);
-	// 		if (arr.indexOf(num) === -1) {
-	// 			arr.push(num);
-	// 		}
-	// 	}
-	// 	return arr;
-	// }
-	// const arr = randomArrayNumbers()
-	// console.log(randomArrayNumbers())
+ 
 
 	useEffect ( () => {
 		function randomArrayNumbers() {
 			const arr =[];
 			while (arr.length < 10) {
-				const num = Math.floor(Math.random() * 10);
+				const num = Math.floor(Math.random() * 21);
 				if (arr.indexOf(num) === -1) {
 					arr.push(num);
 				}
@@ -114,7 +103,7 @@ function Version3() {
 	}
 	const handleNext = () => {
 		const nextQuestion = state.currentQuestion + 1;
-		if (nextQuestion < questions.length) {
+		if (nextQuestion < state.randomArray.length) {
       setState({...state,  currentQuestion: nextQuestion, classSubmit: "hide", classNext: true, classReveal: ''});          
     } else {
       setState({...state, showScore: true, classNext: true, });           
@@ -123,7 +112,7 @@ function Version3() {
 
   const resetClass = state.currentQuestion || !state.classNext? false : true;
   
-  
+  // console.log(data[state.randomArray[state.currentQuestion]].question)
 
   return (
   <div>
@@ -133,19 +122,19 @@ function Version3() {
 		<div className='app'>
 
 			{state.showScore ? (
-				<div className='score-section'>You scored {state.score} out of {data.length}</div>
+				<div className='score-section'>You scored {state.score} out of {state.randomArray.length}</div>
 			) : (
 				<>
 					<div className='question-section'>
 						<div className='question-count'>
-							<span>Question {state.currentQuestion+1}</span>/{data.length}
+							<span>Question {state.currentQuestion+1}</span>/{state.randomArray.length}
 						</div>
-            <div className='question-text'>{data[state.currentQuestion].question}
+            <div className='question-text'>{state.randomArray.length && data[state.randomArray[state.currentQuestion]].question}
 						<button className={state.classSubmit} disabled>{state.classSubmit}! <i class={state.classFace}></i></button>
 
 						</div>
 
-            <div className="answer-section">{data[state.currentQuestion].incorrect.map((answerOption, index)=> {
+            <div className="answer-section">{state.randomArray.length && data[state.randomArray[state.currentQuestion]].incorrect.map((answerOption, index)=> {
               return <button 
                   key={index} 
 									onClick={()=>handleOnClick(answerOption, index)} 
