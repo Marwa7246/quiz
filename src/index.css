@@ -95,6 +95,7 @@ button:focus {
 }
 .hide {
   display: none;
+  text-transform: uppercase;
 }
 
 

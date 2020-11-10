@@ -1,19 +1,17 @@
 import React, {useState} from 'react';
-import classnames from "classnames";
 import './App.css';
 
 function App() {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [showScore, setShowScore] = useState(false);
-  const [score, setScore] = useState(0);
-  const [classSubmit, setClassSubmit] = useState('hide');
-  const [validate, setValidate] = useState('');
-  const [selectedItem, setSelectedItem] = useState();
 
-  // const classOption = classnames("option", {
-  //   "correct": selected,
-  // });
+  const initialState = { 
+    score: 0,
+    currentQuestion: 0,
+    showScore: false,
+    classSubmit: 'hide',
+    }
 
+  const [state, setState] = useState(initialState);
+  console.log(state);
 
   const questions = [
 		{
@@ -56,33 +54,23 @@ function App() {
   
   const handleOnClick = (answerOption, index) => {      
     console.log(index, answerOption.isCorrect);
-    setSelectedItem(index);
-    if(answerOption.isCorrect) {
-      setScore(score+1);
-      setValidate('Correct')
-      setClassSubmit('correct')      
+      const newScore = state.score + 1;
+      const nextQuestion = state.currentQuestion + 1;
 
-    } else {
-      setValidate('Incorrect!')
-      setClassSubmit('incorrect')      
+      if (nextQuestion < questions.length && answerOption.isCorrect) {
+        setState({...state,  currentQuestion: nextQuestion, score: newScore, classSubmit: "correct"});          
+      } else if (nextQuestion < questions.length && !answerOption.isCorrect) { 
+        setState({...state,  currentQuestion: nextQuestion, classSubmit: "incorrect"}); 
+      } else if (nextQuestion >= questions.length && answerOption.isCorrect) {
+        setState({...state, score: newScore, classSubmit: "correct", showScore: true});           
+      } else {
+        setState({...state, classSubmit: "incorrect", showScore: true});           
+      }  
 
 
-    }
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-          setCurrentQuestion(nextQuestion)
-        } else {  
-          setShowScore(true)
-        }
+
+
   }
-  // const determineItemStyle = (index) => {
-  //   const isItemSelected = selectedItem === index;
-  //   console.log(isItemSelected, selectedItem, index);
-  //   return isItemSelected ?  "bg-light-gray" : "bg-black";
-
-  // }
-
-
   
 
   return (
@@ -92,23 +80,20 @@ function App() {
 
 		<div className='app'>
 
-			{showScore ? (
-				<div className='score-section'>You scored {score} out of {questions.length}</div>
+			{state.showScore ? (
+				<div className='score-section'>You scored {state.score} out of {questions.length}</div>
 			) : (
 				<>
 					<div className='question-section'>
 						<div className='question-count'>
-							<span>Question {currentQuestion+1}</span>/{questions.length}
+							<span>Question {state.currentQuestion+1}</span>/{questions.length}
 						</div>
-            <div className='question-text'>{questions[currentQuestion].questionText}</div>
+            <div className='question-text'>{questions[state.currentQuestion].questionText}</div>
 
-            <div className="answer-section">{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
+            <div className="answer-section">{questions[state.currentQuestion].answerOptions.map((answerOption, index)=> {
               return <button
-              // className={determineItemStyle} 
                   key={index} 
-                  onClick={()=>handleOnClick(answerOption, index)}
-                  // selected={determineItemStyle(index)}
-                  
+                  onClick={()=>handleOnClick(answerOption, index)}    
                   >
                     {answerOption.answerText}
                     </button>})}
@@ -119,8 +104,11 @@ function App() {
 				</>
 			)}
 		</div>
-      <button className={classSubmit} >{validate}</button>
+      <button className={state.classSubmit} >{state.classSubmit}</button>
+      <button className={state.classSubmit} >RESET</button>
+
     </div>
+    
 
 	);
 }
