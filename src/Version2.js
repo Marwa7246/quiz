@@ -12,6 +12,7 @@ function Version2() {
 		classSubmit: 'hide',
 		classReveal: '',
 		classNext: true,
+		classFace: ''
 		}
 
   const [state, setState] = useState(initialState);
@@ -62,9 +63,9 @@ function Version2() {
 		const newScore = state.score + 1;
 		
    	if (answerOption.isCorrect) {
-      setState({...state,  score: newScore, classSubmit: "correct", classNext: false, classReveal: 'correct'});                 
+      setState({...state,  score: newScore, classSubmit: "correct", classFace: "fas fa-smile", classNext: false, classReveal: 'show-answer'});                 
     } else {
-      setState({...state, classSubmit: "incorrect", classNext: false, classReveal: 'incorrect'});           
+      setState({...state, classSubmit: "incorrect", classFace: "fas fa-frown", classNext: false, classReveal: 'show-answer'});           
     }  
   }
 
@@ -100,14 +101,15 @@ function Version2() {
 							<span>Question {state.currentQuestion+1}</span>/{questions.length}
 						</div>
             <div className='question-text'>{questions[state.currentQuestion].questionText}
-						<button className={state.classSubmit} >{state.classSubmit}! </button>
+						<button className={state.classSubmit} disabled>{state.classSubmit}! <i class={state.classFace}></i></button>
 
 						</div>
 
             <div className="answer-section">{questions[state.currentQuestion].answerOptions.map((answerOption, index)=> {
               return <button className={answerOption.isCorrect  && state.classReveal}
                   key={index} 
-                  onClick={()=>handleOnClick(answerOption, index)}    
+									onClick={()=>handleOnClick(answerOption, index)} 
+									disabled={!state.classNext}   
                   >
                     {answerOption.answerText}
                     </button>})}

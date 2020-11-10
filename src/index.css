@@ -80,26 +80,27 @@ button {
 
 }
 
-.answer-section:hover, .reset:hover, .version-selection:hover{
-  background-color: #70768a;
+button:hover, .reset:hover, .version-selection:hover{
+  background-color: #43589c;
+  
 }
 
 button:focus, .answer-section:focus {
   outline: none;
 }
-.correct {
+.correct:disabled {
   display: block;
   text-transform: uppercase;
   background-color: #2f922f;
-  cursor: none;
+  cursor: auto;
 
 }
 
-.incorrect {
+.incorrect:disabled {
   text-transform: uppercase;
   display: block;
   background-color: #ff3333;
-  cursor: none;
+  cursor: auto;
 
 }
 
@@ -113,8 +114,14 @@ button:focus, .answer-section:focus {
   text-align:center; 
 
 }
+button:disabled {
+  cursor: auto;
+  background-color: #252d4a;
 
-.reset:disabled {
+}
+
+
+.reset:disabled, .next:disabled {
   display: block;
   background-color: grey;
   color: #b9c0d4;
@@ -135,12 +142,20 @@ button:focus, .answer-section:focus {
   cursor: pointer;
   background-color: #457cc4;
 }
-.next:disabled {
+/* .next:disabled {
   background-color:grey;
   color: #b9c0d4;
   cursor: not-allowed;
+} */
 
+.show-answer:disabled {
+  background-color:lightblue;
+  cursor: auto;
+  color: #234668;
+}
 
+.fas {
+  color: rgb(201, 204, 26);
 }
 
 
