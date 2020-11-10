@@ -66,11 +66,30 @@ button {
   cursor: pointer;
 }
 button:hover {
-  background-color: #555e7d;
+  background-color: #e3e8fa;
 }
 
 button:focus {
   outline: none;
 }
+.correct {
+  background-color: #2f922f;
+}
+
+.incorrect {
+  background-color: #ff3333;
+}
+.next {
+  background-color: lightblue;
+
+}
+.next-end {
+  display: none;
+}
+.option {
+  background-color: yellow;
+
+}
+
 
 

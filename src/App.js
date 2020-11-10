@@ -5,6 +5,9 @@ function App() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const [score, setScore] = useState(0)
+  const [classSubmit, setClassSubmit] = useState('next')
+  const [classOption, setClassOption] = useState('')
+  const [selectedItem, setSelectedItem] = useState()
 
   const questions = [
 		{
@@ -45,22 +48,36 @@ function App() {
 		},
   ];
   
-  const handleOnClick = (isCorrect) => {      
-    const nextQuestion = currentQuestion + 1;
-    console.log(isCorrect);
-    if(isCorrect) {
-      setScore(score+1)
-
+  const handleOnClick = (answerOption, index) => {      
+    console.log(index, answerOption.isCorrect);
+    setSelectedItem(index);
+    if(answerOption.isCorrect) {
+      setScore(score+1);
     }
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion)
-    } else {        
-      setShowScore(true)
-    }
+  }
+  const determineItemStyle = (index) => {
+    const isItemSelected = selectedItem === index;
+    console.log(isItemSelected, selectedItem, index);
+    return isItemSelected ?  "bg-light-gray" : "";
 
   }
 
+  const handleSubmit=(e)=>{
+    const nextQuestion = currentQuestion + 1;
+    console.log(e.target.className)
+    if (nextQuestion < questions.length) {
+          setCurrentQuestion(nextQuestion)
+        } else {  
+          setClassSubmit('next-end')      
+          setShowScore(true)
+        }
+  }
+
   return (
+    <div>
+
+    <h1>Quiz App</h1>
+
 		<div className='app'>
 
 			{showScore ? (
@@ -72,9 +89,17 @@ function App() {
 							<span>Question {currentQuestion+1}</span>/{questions.length}
 						</div>
             <div className='question-text'>{questions[currentQuestion].questionText}</div>
-            
-            <div className='answer-section'>{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
-              return <button onClick={()=>handleOnClick(answerOption.isCorrect)}>{answerOption.answerText}</button>})}
+
+            <div className={classOption}>{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
+              return <button 
+              // className={determineItemStyle} 
+              key={index} 
+              onClick={()=>handleOnClick(answerOption, index)}
+              selected={determineItemStyle(index)}
+              
+              >
+                {answerOption.answerText}
+                </button>})}
 
             </div>
 					</div>
@@ -82,6 +107,9 @@ function App() {
 				</>
 			)}
 		</div>
+      <button className={classSubmit} onClick={handleSubmit}>Next Question</button>
+    </div>
+
 	);
 }
 
