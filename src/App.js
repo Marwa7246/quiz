@@ -72,17 +72,13 @@ function App() {
 							<span>Question {currentQuestion+1}</span>/{questions.length}
 						</div>
             <div className='question-text'>{questions[currentQuestion].questionText}</div>
-            <div className='answer-options'>{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
+            
+            <div className='answer-section'>{questions[currentQuestion].answerOptions.map((answerOption, index)=> {
               return <button onClick={()=>handleOnClick(answerOption.isCorrect)}>{answerOption.answerText}</button>})}
 
             </div>
 					</div>
-					<div className='answer-section'>
-						<button>Answer 1</button>
-						<button>Answer 2</button>
-						<button>Answer 3</button>
-						<button>Answer 4</button>
-					</div>
+	
 				</>
 			)}
 		</div>
