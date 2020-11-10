@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import classnames from "classnames";
+
 import './App.css';
 
 function App() {
@@ -66,11 +68,14 @@ function App() {
       } else {
         setState({...state, classSubmit: "incorrect", showScore: true});           
       }  
-
-
-
-
   }
+
+  const handleReset = ()=> {
+    setState(initialState)
+  }
+
+  const resetClass = state.currentQuestion ? "reset" : "hide";
+  
   
 
   return (
@@ -91,7 +96,7 @@ function App() {
             <div className='question-text'>{questions[state.currentQuestion].questionText}</div>
 
             <div className="answer-section">{questions[state.currentQuestion].answerOptions.map((answerOption, index)=> {
-              return <button
+              return <button className="answer-option"
                   key={index} 
                   onClick={()=>handleOnClick(answerOption, index)}    
                   >
@@ -105,7 +110,7 @@ function App() {
 			)}
 		</div>
       <button className={state.classSubmit} >{state.classSubmit}</button>
-      <button className={state.classSubmit} >RESET</button>
+      <button className={resetClass} onClick={handleReset} >RESET</button>
 
     </div>
     

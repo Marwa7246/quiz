@@ -56,14 +56,18 @@ button {
   width: 100%;
   font-size: 16px;
   color: #ffffff;
-  background-color: #252d4a;
   border-radius: 15px;
   display: flex;
   padding: 5px;
-  justify-content: flex-start;
+  /* justify-content: flex-start; */
   align-items: center;
   border: 5px solid #234668;
+  text-align:center; 
+
+}
+.answer-option {
   cursor: pointer;
+  background-color: #252d4a;
 }
 
 .answer-section {
@@ -73,8 +77,8 @@ button {
   justify-content: space-between;
 }
 
-button:hover {
-  background-color: #e3e8fa;
+.answer-option:hover, .reset:hover {
+  background-color: #70768a;
 }
 
 button:focus {
@@ -82,20 +86,25 @@ button:focus {
 }
 .correct {
   display: block;
+  text-transform: uppercase;
   background-color: #2f922f;
 }
 
 .incorrect {
+  text-transform: uppercase;
   display: block;
   background-color: #ff3333;
 }
-.next {
-  background-color: lightblue;
 
-}
 .hide {
   display: none;
-  text-transform: uppercase;
+}
+.reset {
+  display: block;
+  cursor: pointer;
+  background-color: #457cc4;
+  text-align:center; 
+
 }
 
 
