@@ -1,8 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import classnames from "classnames";
 
 import './App.css';
 import data from './Data.json'
+
+const dataIncorrectAdded = data.map(ele => { 
+	return ({...ele, answerOptions: ele.incorrect.map(e=> {
+		return ({answerText: e, isCorrect: false})})})
+})
+
+const dataFinal = dataIncorrectAdded.map(ele=> {
+	return ({ ...ele, answerOptions: [...ele.answerOptions, {answerText: ele.correct, isCorrect:true}]})
+})
+
+console.log(dataFinal)
 
 function Version3() {
 
@@ -24,7 +34,6 @@ function Version3() {
 	const [state, setState] = useState(initialState);
 	const [reset, setReset] = useState(0)
 	console.log(state);	
- let shuffledData = [];
 
 	useEffect ( () => {
 		function randomArrayNumbers() {
@@ -41,10 +50,9 @@ function Version3() {
 		function shuffle(array) {
 			return array.sort(() => Math.random() - 0.5);
 		}  
-		shuffledData = data.map((ele)=>{
-			return ({...ele, incorrect: shuffle(ele.incorrect)})
-		});
-		
+		dataFinal.map((ele)=>{
+			return ({...ele, incorrect: shuffle(ele.answerOptions)})
+		});		
 
 			setState({...state, randomArray: arr});
 	}, [reset]);
@@ -98,7 +106,7 @@ function Version3() {
     // console.log(index, answerOption.isCorrect);
 		const newScore = state.score + 1;
 		
-   	if (answerOption) {
+   	if (answerOption.isCorrect) {
       setState({...state,  score: newScore, classSubmit: "correct", classFace: "fas fa-smile", classNext: false, classReveal: 'show-answer'});                 
     } else {
       setState({...state, classSubmit: "incorrect", classFace: "fas fa-frown", classNext: false, classReveal: 'show-answer'});           
@@ -138,18 +146,18 @@ function Version3() {
 						<div className='question-count'>
 							<span>Question {state.currentQuestion+1}</span>/{state.randomArray.length}
 						</div>
-            <div className='question-text'>{state.randomArray.length && data[0].question}
+            <div className='question-text'>{state.randomArray.length && dataFinal[state.randomArray[state.currentQuestion]].question}
 						<button className={state.classSubmit} disabled>{state.classSubmit}! <i class={state.classFace}></i></button>
 
 						</div>
 
-            <div className="answer-section">{state.randomArray.length && data[0].incorrect.map((answerOption, index)=> {
-              return <button 
+            <div className="answer-section">{state.randomArray.length && dataFinal[state.randomArray[state.currentQuestion]].answerOptions.map((answerOption, index)=> {
+              return <button className={answerOption.isCorrect  && state.classReveal}
                   key={index} 
 									onClick={()=>handleOnClick(answerOption, index)} 
 									disabled={!state.classNext}   
                   >
-                    {answerOption}
+                    {answerOption.answerText}
                     </button>})}
 
             </div>
